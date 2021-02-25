@@ -11,10 +11,8 @@ container = ContainerClient(account_url=account_url,
                             container_name=container_name,
                             credential=sas)
 
-blob_names = []
-blob_list = container.list_blobs()
-for blob in blob_list:
-    blob_names.append(blob.name)
+
+blob_names = [blob.name for blob in container.list_blobs()]
 print(blob_names[0:5])
 
 directory = "./data/"
