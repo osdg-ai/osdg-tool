@@ -1,0 +1,13 @@
+Flask
+gunicorn
+flask-restful
+flask-cors
+pickle-mixin
+gensim
+scikit-learn
+spacy
+itsdangerous==1.1.0
+Jinja2==2.10.1
+MarkupSafe==1.1.1
+Werkzeug==0.15.4
+azure-storage-blob==12.3.2
