@@ -1,0 +1,51 @@
+<html>
+<head></head>
+
+<body>
+<h1 style='color:black'>Hello There! Welcome to OSDG!</h1>
+
+<h2>OSDG is a free, open-source tool that assigns SDG labels to your input.</h2>
+
+<p><strong>More information:</strong></p>
+  <li><a href="https://technote.ai/osdg">OSDG platform</a>
+    <li><a href="https://arxiv.org/abs/2005.14569">OSDG Paper on ArXix</a>
+    <li><a href="https://github.com/osdg-ai/osdg-tool/">OSDG GitHub Repository</a>
+      <li><a href="https://hub.docker.com/repository/docker/technoteai/osdg">OSDG Docker Hub Repository</a>
+
+<p></p>
+<h2>Usage:</h2>
+<p>Short-text (e.g. a publication abstract).</p>
+
+<h3 style='color:black'>Usage:</h3>
+<p> To use the API, make a simple call with Python requests: </p>
+<h4> Publication Abstract</h4>
+<p></p>
+<p>
+<code>import requests</code>
+</p>
+<p><code>
+data = {
+  'query': """Using satellite data on deforestation and weather in Malawi and linking those datasets
+ with household survey datasets, we estimate the causal effect of deforestation on access to clean drinking water.
+In the existing literature on forest science and hydrology, the consensus is that deforestation increases water yield.
+In this study, we directly examine the causal effect of deforestation on households’ access to clean drinking water. Results of the two-stage least-squares (2SLS) with cluster and time fixed-effect estimations illustrate strong empirical   evidence that deforestation decreases access to clean drinking water. Falsification tests show that the possibility of our instrumental variable picking up an unobserved time trend is very unlikely. We find that a 1.0-percentage-point increase in deforestation decreases access to clean drinking water by 0.93 percentage points. With this estimated impact, deforestation in the last decade in Malawi (14%) has had the same magnitude of effect on access to clean drinking water as that of a 9% decrease in rainfall.""" } </code>
+</p>
+<p><code>
+response = requests.post('http://localhost:5000/search', data=data)
+</code></p>
+<p><code>
+result = response.text
+</code></p>
+
+<p><strong>Returns:</strong></p>
+<p>A list of relevant SDGs and their relevance.<p>
+<p><code>
+[['SDG13', "String Relevance"], ['SDG15', "Strong Relevance"], ['SDG3', "Moderate Relevance"]]
+</code>
+</p>
+
+<h2>List of data sources used in project:</h2>
+  <p><a href="https://github.com/TechNote-ai/osdg/blob/master/OSDG_DATA_SOURCES.md">OSDG GitHub Repository</a>
+
+</body>
+<html>

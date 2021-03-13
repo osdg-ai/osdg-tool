@@ -1,25 +1,19 @@
-
-#Use Python as base image
 FROM nethacker/ubuntu-18-04-python-3:python-3.7.3
 
-#Copy requirements.txt into root and cd into root
-COPY requirements.txt /root/
-WORKDIR  /root/
+COPY requirements.txt /root
+RUN pip install --upgrade pip
+RUN pip install -r /root/requirements.txt
 
-#Install requirements and download spacy
-RUN pip install -r /root/requirements.txt && useradd -m ubuntu
-RUN python -m spacy download en_core_web_sm
+# RUN useradd -m ubuntu
+# USER ubuntu
 
-#Set Environemnt and user
+WORKDIR /srv/osdg
+COPY osdg/ /srv/osdg/
+
 ENV HOME=/home/ubuntu
-USER ubuntu
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONBUFFERED 1
 
-#Copy the files to the ubuntu user dorectory and cd into it
-COPY . /home/ubuntu/
-WORKDIR /home/ubuntu/
-
-#Expose port and start app 
 EXPOSE 5000
 
-CMD ["python", "application.py"]
-
+CMD ["python3", "application.py"]
