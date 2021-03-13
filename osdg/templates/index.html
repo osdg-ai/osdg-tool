@@ -24,28 +24,32 @@
 <code>import requests</code>
 </p>
 <p><code>
-data = {
-  'query': """Using satellite data on deforestation and weather in Malawi and linking those datasets
- with household survey datasets, we estimate the causal effect of deforestation on access to clean drinking water.
-In the existing literature on forest science and hydrology, the consensus is that deforestation increases water yield.
-In this study, we directly examine the causal effect of deforestation on households’ access to clean drinking water. Results of the two-stage least-squares (2SLS) with cluster and time fixed-effect estimations illustrate strong empirical   evidence that deforestation decreases access to clean drinking water. Falsification tests show that the possibility of our instrumental variable picking up an unobserved time trend is very unlikely. We find that a 1.0-percentage-point increase in deforestation decreases access to clean drinking water by 0.93 percentage points. With this estimated impact, deforestation in the last decade in Malawi (14%) has had the same magnitude of effect on access to clean drinking water as that of a 9% decrease in rainfall.""" } </code>
+data = {'text': """Developing nations are faced with a two‐edged sword in the field of energy.
+                   On the one hand the rising price of oil has reduced the potential for fossil fuel energy and eroded foreign exchange reserves in oil‐importing countries. 
+                   At the same time deforestation may be causing increased prices or shortages of fuels such as fuelwood and charcoal. 
+                   This paper reviews the most recent and sometimes controversial estimates of deforestation in developing countries and analyzes the relationship 
+                   between deforestation and its probable causes. Three recent estimates of the rate of deforestation in developing countries 
+                   between 1968 and 1978 are compared using rank order correlation. 
+                   Two of the estimates, of closed forest and moist tropical forest, are in significant agreement but differ from a third estimate that includes 
+                   open woodland and regenerating forest. Agreement is strong among all three sources for a restricted group of countries. 
+                   A cross‐national analysis confirms the most frequently cited causes of deforestation. 
+                   Deforestation from 1968–78 in 39 countries in Africa, Latin America, and Asia is significantly related to the rate of population growth 
+                   over the period and to wood fuels production and wood exports in 1968; it is indirectly related to agricultural expansion and 
+                   not related to the growth of per capita GNP. Results indicate that in the short term, deforestation is due to population growth and agricultural expansion, 
+                   aggravated over the long term by wood harvesting for fuel and export."""} </code>
 </p>
 <p><code>
-response = requests.post('http://localhost:5000/search', data=data)
+response = requests.post('http://localhost:5000/tag', json=data)
 </code></p>
 <p><code>
-result = response.text
+result = response.json()
 </code></p>
 
 <p><strong>Returns:</strong></p>
-<p>A list of relevant SDGs and their relevance.<p>
+<p>A list of relevant SDGs and their relevance score.<p>
 <p><code>
-[['SDG13', "String Relevance"], ['SDG15', "Strong Relevance"], ['SDG3', "Moderate Relevance"]]
+[{'sdg': 'SDG_7', 'relevance': 2.0}, {'sdg': 'SDG_15', 'relevance': 2.0}]
 </code>
 </p>
-
-<h2>List of data sources used in project:</h2>
-  <p><a href="https://github.com/TechNote-ai/osdg/blob/master/OSDG_DATA_SOURCES.md">OSDG GitHub Repository</a>
-
 </body>
 <html>
