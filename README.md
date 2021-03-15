@@ -9,7 +9,7 @@ A version of the OSDG tool is available at [OSDG website](https://www.osdg.ai). 
 
 **Check out our paper on ArXiv [OSDG -- Open-Source Approach to Classify Text Data by UN Sustainable Development Goals (SDGs)](https://arxiv.org/abs/2005.14569)**
 
-A smaller version of the tool to classify text fragments is available at [Technote Docker Hub](https://hub.docker.com/r/technoteai/osdg) repository.
+A smaller version of the tool to classify text fragments is available at [Technote Docker Hub](https://hub.docker.com/r/osdg/osdg-tool) repository.
 
 ## Usage
 The tool is uploaded to the Docker Hub repository. If you do not have docker installed on your system, please visit [Docker page](https://docs.docker.com/get-docker/) and follow the instructions to install docker on your OS.
@@ -22,13 +22,13 @@ docker --version
 To download the docker image :
 
 ```bash
-docker pull osdg-ai/osdg-tool:latest
+docker pull osdg/osdg-tool:latest
 ```
 
 Then run the downloaded docker image
 
  ```bash
- docker run --name osdg-tool -p 5000:5000 --detach osdg-ai/osdg-tool:latest
+ docker run --name osdg-tool -p 5000:5000 --detach osdg/osdg-tool:latest
  ```
 
 Once container is started, it will be running on port 5000.
