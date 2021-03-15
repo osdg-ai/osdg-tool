@@ -4,8 +4,8 @@ COPY requirements.txt /root
 RUN pip install --upgrade pip
 RUN pip install -r /root/requirements.txt
 
-# RUN useradd -m ubuntu
-# USER ubuntu
+RUN useradd -m ubuntu
+USER ubuntu
 
 WORKDIR /srv/osdg
 COPY osdg/ /srv/osdg/
