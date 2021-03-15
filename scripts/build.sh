@@ -1,1 +1,1 @@
-sudo docker build -t osdg/osdg-tool:latest .
+docker build -t osdg/osdg-tool:latest .
