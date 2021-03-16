@@ -17,11 +17,13 @@ sdg_tagger = SdgTagger()
 class TagInput(BaseModel):
     text: str
     detailed: Optional[bool] = False
+    return_fos: Optional[bool] = False
 
 
 class TagManyInput(BaseModel):
     texts: List[str]
     detailed: Optional[bool] = False
+    return_fos: Optional[bool] = False
 
 
 with open('templates/index.html', 'r') as file_:
@@ -42,9 +44,13 @@ async def tag(item: TagInput):
         return JSONResponse(
             status_code=status.HTTP_400_BAD_REQUEST,
             content={'message': str(ex), 'meta': traceback.format_exc(), 'status': 'ERROR'})
+    if item.return_fos:
+        result = {'fos': fos, 'sdgs': sdgs}
+    else:
+        result = sdgs
     return JSONResponse(
         status_code=status.HTTP_200_OK,
-        content={'result': sdgs, 'status': 'OK'})
+        content={'result': result, 'status': 'OK'})
 
 
 @main_router.post('/tag_many')
@@ -56,6 +62,10 @@ async def tag_many(item: TagManyInput):
         return JSONResponse(
             status_code=status.HTTP_400_BAD_REQUEST,
             content={'message': str(ex), 'meta': traceback.format_exc(), 'status': 'ERROR'})
+    if item.return_fos:
+        result = {'foses': foses, 'sdgs': sdgs}
+    else:
+        result = sdgs
     return JSONResponse(
         status_code=status.HTTP_200_OK,
-        content={'result': sdgs, 'status': 'OK'})
+        content={'result': result, 'status': 'OK'})
