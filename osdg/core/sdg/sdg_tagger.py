@@ -12,8 +12,8 @@ class SdgTagger:
             self.fosmap = json.load(file_)
 
         self.use_frequency = True
-        self.n_min_relevant_fos = 2
-        self.limit = 5
+        self.n_min_relevant_fos = 1
+        self.limit = 3
 
 
     def tag(self, fos: Dict[str, Union[int, float]], detailed: bool) -> List[Dict[str, Union[str, float, List[str]]]]:
