@@ -1,8 +1,10 @@
-FROM nethacker/ubuntu-18-04-python-3:python-3.7.3
+FROM ubuntu:18.04
+FROM python:3.9
+
 
 COPY requirements.txt /root
-RUN pip install --upgrade pip
-RUN pip install -r /root/requirements.txt
+RUN python3 -m pip install --upgrade pip
+RUN python3 -m pip install -r /root/requirements.txt
 
 RUN useradd -m ubuntu
 USER ubuntu
