@@ -84,8 +84,12 @@ class FosExtractor:
         foses = list()
         term_counts = self.ngram_matcher.match(texts)
         for idxs, frequencies in term_counts:
-            fos = self._submerge(self.fos_ids[idxs], self.fos_names[idxs], frequencies)
-            foses.append({fos_id: frequency for fos_id, _, frequency in fos})
+            if submerge:
+                fos = {fos_id: frequency
+                       for fos_id, _, frequency in self._submerge(self.fos_ids[idxs], self.fos_names[idxs], frequencies)}
+            else:
+                fos = dict(zip(self.fos_ids[idxs], frequencies))
+            foses.append(fos)
         return foses
 
     
