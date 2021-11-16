@@ -64,34 +64,6 @@ class FosExtractor:
 
         return fos
 
-
-    def extract_many(self, texts: List[str], text_type: str = 'paragraph', submerge: bool = False) -> List[Dict[str, int]]:
-        """
-        Matches FOS to multiple texts.
-
-        Parameters
-        ----------
-        texts : List[str]
-            Input texts.
-
-        Returns
-        -------
-        List[Dict[str, int]]
-            List of matched FOS for each text.
-              - element keys : FOS ids
-              - element values : frequency
-        """
-        foses = list()
-        term_counts = self.ngram_matcher.match(texts)
-        for idxs, frequencies in term_counts:
-            if submerge:
-                fos = {fos_id: frequency
-                       for fos_id, _, frequency in self._submerge(self.fos_ids[idxs], self.fos_names[idxs], frequencies)}
-            else:
-                fos = dict(zip(self.fos_ids[idxs], frequencies))
-            foses.append(fos)
-        return foses
-
     
     def _segment(self, text):
         raise NotImplementedError
