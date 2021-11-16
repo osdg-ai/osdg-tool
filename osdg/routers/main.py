@@ -18,7 +18,7 @@ class TagInput(BaseModel):
     text: str
     detailed: Optional[bool] = False
     text_type: str = 'paragraph'
-    submerge_fos: str = False
+    submerge_fos: bool = False
     return_fos: Optional[bool] = False
 
 
@@ -26,7 +26,7 @@ class TagManyInput(BaseModel):
     texts: List[str]
     detailed: Optional[bool] = False
     text_type: str = 'paragraph'
-    submerge_fos: str = False
+    submerge_fos: bool = False
     return_fos: Optional[bool] = False
 
 
