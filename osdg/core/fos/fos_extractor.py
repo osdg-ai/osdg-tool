@@ -1,3 +1,4 @@
+from collections import defaultdict
 from pathlib import Path
 from typing import Dict, Iterable, List, Union
 import numpy as np
@@ -12,13 +13,15 @@ class FosExtractor:
         self.fos_names = fos_data['fos_names']
         fos_data.close()
 
+        self._fosmap = dict(zip(self.fos_ids, self.fos_names))
+
         self.ngram_matcher = NgramMatcher(self.fos_names,
                                           lowercase=True,
                                           token_pattern=r'(?u)\b\w+\b',
                                           ngram_size=(1, 4))
 
 
-    def extract(self, text: str) -> Dict[str, int]:
+    def extract(self, text: str, text_type: str = 'paragraph', submerge: bool = False) -> Dict[str, int]:
         """
         Matches fos to one text.
 
@@ -34,12 +37,35 @@ class FosExtractor:
               - keys : FOS ids
               - values : frequencies
         """
-        idxs, frequencies = self.ngram_matcher.match([text])[0]
-        fos = self._submerge(self.fos_ids[idxs], self.fos_names[idxs], frequencies)
-        return {fos_id: frequency for fos_id, _, frequency in fos}
+        if text_type == 'paragraph':
+            idxs, frequencies = self.ngram_matcher.match([text])[0]
+            if submerge:
+                fos = {fos_id: frequency
+                       for fos_id, _, frequency in self._submerge(self.fos_ids[idxs], self.fos_names[idxs], frequencies)}
+            else:
+                fos = dict(zip(self.fos_ids[idxs], frequencies))
+
+        elif text_type == 'pdf_document':
+            fos = defaultdict(int)
+            for paragraph in self._segment(text):
+                paragraph_fos = self.extract(paragraph, text_type='paragraph', submerge=False)
+                for fos_id in paragraph_fos.keys():
+                    fos[fos_id] += 1
+            if submerge:
+                fos = {
+                    fos_id: frequency
+                    for fos_id, _, frequency in self._submerge(fos.keys(),
+                                                               [self.fos_id2fos_name[fos_id] for fos_id in fos.keys()],
+                                                               fos.values())
+                }
+
+        else:
+            raise NotImplementedError
+
+        return fos
 
 
-    def extract_many(self, texts: List[str]) -> List[Dict[str, int]]:
+    def extract_many(self, texts: List[str], text_type: str = 'paragraph', submerge: bool = False) -> List[Dict[str, int]]:
         """
         Matches FOS to multiple texts.
 
@@ -61,6 +87,10 @@ class FosExtractor:
             fos = self._submerge(self.fos_ids[idxs], self.fos_names[idxs], frequencies)
             foses.append({fos_id: frequency for fos_id, _, frequency in fos})
         return foses
+
+    
+    def _segment(self, text):
+        raise NotImplementedError
 
 
     def _submerge(self, ngram_ids: Iterable[str], ngram_names: Iterable[str], frequencies: Iterable[int]) -> List[List[Union[str, int]]]:
@@ -101,6 +131,10 @@ class FosExtractor:
             if frequency > 0:
                 descored_ngrams.append([ngram_id, ngram_name, frequency])
         return descored_ngrams
+
+    
+    def fos_id2fos_name(self, fos_id):
+        return self._fosmap[fos_id]
 
 
     @staticmethod

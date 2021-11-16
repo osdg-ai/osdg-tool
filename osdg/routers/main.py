@@ -17,12 +17,16 @@ sdg_tagger = SdgTagger()
 class TagInput(BaseModel):
     text: str
     detailed: Optional[bool] = False
+    text_type: str = 'paragraph'
+    submerge_fos: str = False
     return_fos: Optional[bool] = False
 
 
 class TagManyInput(BaseModel):
     texts: List[str]
     detailed: Optional[bool] = False
+    text_type: str = 'paragraph'
+    submerge_fos: str = False
     return_fos: Optional[bool] = False
 
 
@@ -38,7 +42,7 @@ async def home():
 @main_router.post('/tag')
 async def tag(item: TagInput):
     try:
-        fos = fos_extractor.extract(item.text)
+        fos = fos_extractor.extract(item.text, text_type=item.text_type, submerge=item.submerge_fos)
         sdgs = sdg_tagger.tag(fos, detailed=item.detailed)
     except Exception as ex:
         return JSONResponse(
@@ -56,7 +60,7 @@ async def tag(item: TagInput):
 @main_router.post('/tag_many')
 async def tag_many(item: TagManyInput):
     try:
-        foses = fos_extractor.extract_many(item.texts)
+        foses = fos_extractor.extract_many(item.texts, text_type=item.text_type, submerge=item.submerge_fos)
         sdgs = sdg_tagger.tag_many(foses, detailed=item.detailed)
     except Exception as ex:
         return JSONResponse(
