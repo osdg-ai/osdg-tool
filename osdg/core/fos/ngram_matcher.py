@@ -1,4 +1,5 @@
-from typing import Any, Iterable, List, Tuple, Union, NoReturn
+from collections import defaultdict
+from typing import Any, DefaultDict, Iterable, List, Tuple, Union, NoReturn
 
 import numpy as np
 import re
@@ -135,16 +136,13 @@ class NgramMatcher:
 
         self.__validate_documents(documents)
         for document in documents:
-            ngram_counts = dict()
+            ngram_counts = defaultdict(int)
             for ngram in self._generate_ngrams(document):
                 try:
                     idx = ngram_index_map[ngram]
-                    try:
-                        ngram_counts[idx] += 1
-                    except KeyError:
-                        ngram_counts[idx] = 1
                 except KeyError:
                     continue
+                ngram_counts[idx] += 1
 
             ngrams.append((list(ngram_counts.keys()),
                            list(ngram_counts.values())))
